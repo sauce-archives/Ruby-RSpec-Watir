@@ -54,7 +54,7 @@ This code is provided on an "AS-IS” basis without warranty of any kind, either
 
 ##### [RSpec Documentation](https://relishapp.com/rspec)
 
-##### [WatirWebdriver Documentation](http://www.rubydoc.info/gems/watir-webdriver/frames)
+##### [Watir Documentation](http://www.rubydoc.info/gems/watir/frames)
 
 ##### [Ruby Documentation](http://ruby-doc.org/)
 

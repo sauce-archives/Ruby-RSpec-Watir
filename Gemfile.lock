@@ -45,8 +45,8 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
-    watir-webdriver (0.9.9)
-      selenium-webdriver (>= 2.46.2)
+    watir (6.0.3)
+      selenium-webdriver (~> 3.0)
     websocket (1.2.3)
 
 PLATFORMS
@@ -57,7 +57,7 @@ DEPENDENCIES
   parallel_split_test
   rspec
   sauce_whisk
-  watir-webdriver
+  watir (~> 6.0)
 
 BUNDLED WITH
    1.13.7
