@@ -3,6 +3,7 @@ rvm:
 - 2.3.3
 before_install:
 - export | grep SAUCE_
+- echo $BUILD_TAG
 env:
   global:
     - BUILD_TAG=$TRAVIS_REPO_SLUG+$TRAVIS_BUILD_NUMBER
