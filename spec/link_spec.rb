@@ -1,4 +1,4 @@
-require_relative "spec_helper"
+require "spec_helper"
 
 describe "Guinea Pig Link" do
   it "Verify Link opens page with correct title" do
