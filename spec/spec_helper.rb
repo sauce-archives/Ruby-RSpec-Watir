@@ -1,35 +1,30 @@
-require "rspec/expectations"
-require "watir-webdriver"
+require "watir"
 require "rspec"
 require "sauce_whisk"
 
 RSpec.configure do | config |
+  config.before(:each) do | test |
+    build_name = ENV['JENKINS_BUILD_NUMBER'] ||
+        ENV['SAUCE_BAMBOO_BUILDNUMBER'] ||
+        ENV['SAUCE_TC_BUILDNUMBER'] ||
+        ENV['SAUCE_BUILD_NAME'] ||
+        'LOCAL'
 
-  config.before(:each) do | x |
-    capabilities_config = {
-      :version => "#{ENV['version']}",
-      :browserName => "#{ENV['browserName']}",
-      :platform => "#{ENV['platform']}",
-      :name => x.full_description
+    capabilities = {
+      version: ENV['version'],
+      browserName: ENV['browserName'],
+      platform: ENV['platform'],
+      name: test.full_description,
+      build: build_name
     }
 
     url = "https://#{ENV['SAUCE_USERNAME']}:#{ENV['SAUCE_ACCESS_KEY']}@ondemand.saucelabs.com:443/wd/hub".strip
 
-    client = Selenium::WebDriver::Remote::Http::Default.new
-    client.timeout = 180
-    @browser = Watir::Browser.new(:remote, :url => url, :desired_capabilities => capabilities_config, :http_client => client)
+    @browser = Watir::Browser.new(:remote, url: url, desired_capabilities: capabilities)
   end
 
   config.after(:each) do | example |
-    sessionid = @browser.driver.send(:bridge).session_id
-    @browser.quit
-
-
-    if example.exception
-      SauceWhisk::Jobs.fail_job sessionid
-    else
-      SauceWhisk::Jobs.pass_job sessionid
-    end
+    session_id = @browser.wd.session_id
+    SauceWhisk::Jobs.change_status(session_id, example.exception.nil?)
   end
-
 end
