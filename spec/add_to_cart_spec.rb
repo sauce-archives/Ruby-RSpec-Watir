@@ -2,6 +2,16 @@
 
 require 'spec_helper'
 
+describe 'Puffing Billy' do
+  it 'uses it' do
+    proxy.stub('http://www.saucedemo.com/inventory.html').
+        and_return(:redirect_to => 'http://watir.com')
+
+    @browser.goto 'http://www.saucedemo.com/inventory.html'
+    expect(@browser.url).to eq('http://watir.com/')
+  end
+end
+
 describe 'Cart' do
   before { @browser.goto 'www.saucedemo.com/inventory.html' }
 

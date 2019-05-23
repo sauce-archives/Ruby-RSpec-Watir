@@ -2,6 +2,9 @@
 
 require 'watir'
 require 'sauce_whisk'
+require 'billy/watir/rspec'
+Selenium::WebDriver.logger.level = :debug
+$DEBUG = true
 
 RSpec.configure do |config|
   config.before(:each) do |example|
@@ -10,11 +13,18 @@ RSpec.configure do |config|
 
     browser = options.delete(:browser_name)
 
-    @browser = Watir::Browser.new browser, options
+    # Puffing Billy Local
+    @browser = Billy::Browsers::Watir.new :chrome
+
+    # Puffing Billy Remote
+    # @browser = Billy::Browsers::Watir.new :chrome, options
+
+    # No Puffing Billy
+    #@browser = Watir::Browser.new :chrome #browser, options
   end
 
   config.after(:each) do |example|
-    SauceWhisk::Jobs.change_status(@browser.wd.session_id, !example.exception)
+    SauceWhisk::Jobs.change_status(@browser.wd.session_id, !example.exception) if @browser.wd.respond_to?(:session_id)
 
     @browser.quit
   end
@@ -55,6 +65,7 @@ RSpec.configure do |config|
       # this doesn't force Chrome to w3c
       {platform: 'macOS 10.12',
        browser_name: 'chrome',
+       tunnel_identifier: 'ORANGE',
        version: '65.0'}.merge(sauce_oss(name))
     end
   end
