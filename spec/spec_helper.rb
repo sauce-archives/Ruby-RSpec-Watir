@@ -5,11 +5,13 @@ require 'simple_sauce'
 
 RSpec.configure do |config|
   config.before(:each) do |example|
-    platform[:name] = example.full_description
-    sauce_options = SimpleSauce::Options.new(platform)
+    opts = platform.merge(name: example.full_description,
+                          screen_resolution: '1080x720',
+                          command_timeout: 90)
+    sauce_options = SimpleSauce::Options.new(opts)
 
     @session = SimpleSauce::Session.new(sauce_options)
-    @session.data_center = ENV['PLATFORM'] == 'headless' ? :US_EAST : :US_WEST
+    @session.data_center = ENV['SAUCE_DATA_CENTER'].to_sym if ENV['SAUCE_DATA_CENTER']
 
     @browser = Watir::Browser.new(@session.start)
   end
@@ -45,6 +47,7 @@ RSpec.configure do |config|
       {platform_name: 'Windows 7',
        browser_name: 'firefox'}
     when 'headless'
+      ENV['SAUCE_DATA_CENTER'] = 'US_EAST'
       {platform_name: 'Linux',
        browser_name: 'chrome'}
     end
