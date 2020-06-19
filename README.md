@@ -10,7 +10,7 @@ This code is provided on an "AS-IS” basis without warranty of any kind, either
     * [Install Git](https://github.com/address-book/junit_tests#install-git)
     * Clone This Repo
     ```
-    $ git clone ruby-rspec-watir https://github.com/saucelabs-sample-test-frameworks/Ruby-RSpec-Watir.git
+    $ git clone https://github.com/saucelabs-sample-test-frameworks/Ruby-RSpec-Watir.git ruby-rspec-watir 
     ```
     * Install bundler
     ```
